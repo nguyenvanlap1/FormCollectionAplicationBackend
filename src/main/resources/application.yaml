@@ -1,0 +1,17 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /identity
+
+spring:
+  datasource:
+    url: "jdbc:mysql://localhost:3306/form_collection_db"
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+jwt:
+  signerKey: "UMMJYnWdL7STrWwWaPakmpPQG2fRk/XmfXBhkRv2ZmBG4QtzxNweLKQ5umTXZ/wc"

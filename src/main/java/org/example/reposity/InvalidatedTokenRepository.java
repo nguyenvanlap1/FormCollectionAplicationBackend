@@ -1,0 +1,8 @@
+package org.example.reposity;
+
+import org.example.entity.InvalidatedToken;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface InvalidatedTokenRepository extends JpaRepository<InvalidatedToken, String> {
+
+}

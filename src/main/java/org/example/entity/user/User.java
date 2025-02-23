@@ -1,9 +1,9 @@
-package org.example.entity;
+package org.example.entity.user;
 
-import org.example.validator.DobConstraint;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.example.entity.form.FormAnswer;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -29,6 +29,9 @@ public class User {
 
     Set<String> roles;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
     Set<UserProject> userProjects;
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
+    Set<FormAnswer> formAnswers;
 }

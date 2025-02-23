@@ -8,8 +8,8 @@ import org.example.dto.enums.ErrorCode;
 import org.example.dto.enums.Role;
 import org.example.dto.request.UserCreationRequest;
 import org.example.dto.request.UserUpdateRequest;
-import org.example.dto.response.UserResponse;
-import org.example.entity.User;
+import org.example.dto.response.user.UserResponse;
+import org.example.entity.user.User;
 import org.example.exception.AppException;
 import org.example.mapper.UserMapper;
 import org.example.reposity.UserRepository;
@@ -31,7 +31,7 @@ public class UserService {
     UserMapper userMapper;
     PasswordEncoder passwordEncoder;
 
-    public User createUser(UserCreationRequest request) {
+    public UserResponse createUser(UserCreationRequest request) {
         if(userRepository.existsByUsername(request.getUsername())){
             throw (new AppException(ErrorCode.USER_EXISTED));
         }
@@ -43,7 +43,7 @@ public class UserService {
         roles.add(Role.USER.name());
         user.setRoles(roles);
 
-        return userRepository.save(user);
+        return userMapper.toUserResponse(userRepository.save(user));
     }
 
     public UserResponse getMyInfo() {

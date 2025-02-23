@@ -28,4 +28,7 @@ public class User {
     LocalDate dob;
 
     Set<String> roles;
+
+    @OneToMany
+    Set<UserProject> userProjects;
 }

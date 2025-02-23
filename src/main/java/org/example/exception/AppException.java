@@ -1,9 +1,12 @@
 package org.example.exception;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.example.dto.enums.ErrorCode;
 
 
+@Setter
+@Getter
 public class AppException extends RuntimeException{
     private ErrorCode errorCode;
 
@@ -12,11 +15,4 @@ public class AppException extends RuntimeException{
         this.errorCode = errorCode;
     }
 
-    public ErrorCode getErrorCode() {
-        return errorCode;
-    }
-
-    public void setErrorCode(ErrorCode errorCode) {
-        this.errorCode = errorCode;
-    }
 }

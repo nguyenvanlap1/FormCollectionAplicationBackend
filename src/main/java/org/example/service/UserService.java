@@ -12,10 +12,8 @@ import org.example.dto.response.UserResponse;
 import org.example.entity.User;
 import org.example.exception.AppException;
 import org.example.mapper.UserMapper;
-import org.example.reposity.RoleRepository;
 import org.example.reposity.UserRepository;
 import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,7 +30,6 @@ public class UserService {
     UserRepository userRepository;
     UserMapper userMapper;
     PasswordEncoder passwordEncoder;
-    RoleRepository roleRepository;
 
     public User createUser(UserCreationRequest request) {
         if(userRepository.existsByUsername(request.getUsername())){
@@ -44,7 +41,7 @@ public class UserService {
 
         Set<String> roles = new HashSet<>();
         roles.add(Role.USER.name());
-//        user.setRoles(roles);
+        user.setRoles(roles);
 
         return userRepository.save(user);
     }
@@ -73,11 +70,12 @@ public class UserService {
 
     public UserResponse updateUser(String userId, UserUpdateRequest request) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+
+        Set<String> roles = new HashSet<>(user.getRoles());
         userMapper.updateUser(user, request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-//        var roles = roleRepository.findAllById(request.getRoles());
-//        user.setRoles(new HashSet<>(roles));
+        user.setRoles(roles);
 
         return userMapper.toUserResponse(userRepository.save(user));
     }

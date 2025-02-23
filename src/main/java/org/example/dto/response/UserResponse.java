@@ -1,9 +1,7 @@
 package org.example.dto.response;
 
-import jakarta.persistence.ManyToMany;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.example.entity.Role;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -21,5 +19,5 @@ public class UserResponse {
     String firstName;
     String lastName;
     LocalDate dob;
-    Set<Role> roles;
+    Set<String> roles;
 }

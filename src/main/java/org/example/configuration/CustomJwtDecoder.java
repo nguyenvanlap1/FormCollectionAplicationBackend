@@ -1,7 +1,7 @@
 package org.example.configuration;
 
 import com.nimbusds.jose.JOSEException;
-import org.example.dto.request.IntrospectRequest;
+import org.example.dto.request.authentication.IntrospectRequest;
 import org.example.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,4 +1,4 @@
-package org.example.dto.request;
+package org.example.dto.request.user;
 
 import jakarta.validation.constraints.Size;
 import lombok.*;

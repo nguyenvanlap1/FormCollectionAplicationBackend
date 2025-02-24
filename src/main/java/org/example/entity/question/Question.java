@@ -8,11 +8,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 import org.example.entity.answer.Answer;
 import org.example.entity.form.Form;
 
 import java.util.List;
 
+@SuperBuilder
 @Setter
 @Getter
 @Entity

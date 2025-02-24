@@ -3,7 +3,7 @@ package org.example.exception;
 import jakarta.validation.ConstraintViolation;
 import lombok.extern.slf4j.Slf4j;
 import org.example.dto.enums.ErrorCode;
-import org.example.dto.response.ApiResponse;
+import org.example.dto.response.authentication.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;

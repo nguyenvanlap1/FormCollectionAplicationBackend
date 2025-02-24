@@ -35,8 +35,8 @@ public class Form {
    Project project;
 
    @OneToMany(mappedBy = "form", cascade = CascadeType.ALL, orphanRemoval = true)
-   List<Question> question;
+   List<Question> questions;
 
    @OneToMany(mappedBy = "form", cascade = CascadeType.ALL, orphanRemoval = true)
-   Set<FormAnswer> formAnswer;
+   Set<FormAnswer> formAnswers;
 }

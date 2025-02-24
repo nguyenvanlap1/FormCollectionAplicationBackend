@@ -1,7 +1,7 @@
 package org.example.mapper;
 
-import org.example.dto.request.UserCreationRequest;
-import org.example.dto.request.UserUpdateRequest;
+import org.example.dto.request.user.UserCreationRequest;
+import org.example.dto.request.user.UserUpdateRequest;
 import org.example.dto.response.user.UserResponse;
 import org.example.entity.user.User;
 import org.mapstruct.Mapper;

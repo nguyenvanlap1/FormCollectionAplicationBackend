@@ -1,9 +1,7 @@
-package org.example.dto.request;
+package org.example.dto.request.project;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.example.entity.user.UserProject;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor

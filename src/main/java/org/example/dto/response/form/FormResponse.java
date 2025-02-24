@@ -1,8 +1,8 @@
-package org.example.dto.request.form;
+package org.example.dto.response.form;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.example.dto.request.question.QuestionRequest;
+import org.example.dto.response.question.QuestionResponse;
 import java.util.List;
 
 @Data
@@ -10,9 +10,9 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class FormCreationRequest {
+public class FormResponse {
+    private String id;
     private String name;
     private String introduction;
-    private List<QuestionRequest> questions;
-    private String projectId;
+    private List<QuestionResponse> questions;
 }

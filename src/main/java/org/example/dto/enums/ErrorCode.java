@@ -14,7 +14,9 @@ public enum ErrorCode {
     USER_NOT_EXISTED(1005, "User not existed", HttpStatus.NOT_FOUND),
     UNAUTHENTICATED(1006, "UNAUTHENTICATED", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(1007, "You do not have permission", HttpStatus.FORBIDDEN),
-    INVALID_DOB(1008, "Your age must be at least {min}", HttpStatus.BAD_REQUEST)
+    INVALID_DOB(1008, "Your age must be at least {min}", HttpStatus.BAD_REQUEST),
+    PROJECT_NOT_EXISTED(1009, "Project not existed", HttpStatus.NOT_FOUND),
+    FORBIDDEN(1010, "You are not part of this project", HttpStatus.FORBIDDEN),
     ;
 
     private final int code;

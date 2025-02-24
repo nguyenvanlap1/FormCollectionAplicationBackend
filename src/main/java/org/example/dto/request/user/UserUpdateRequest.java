@@ -1,4 +1,4 @@
-package org.example.dto.request;
+package org.example.dto.request.user;
 
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -6,8 +6,6 @@ import lombok.experimental.FieldDefaults;
 import org.example.validator.DobConstraint;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor

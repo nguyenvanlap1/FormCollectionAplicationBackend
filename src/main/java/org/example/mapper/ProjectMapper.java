@@ -3,7 +3,7 @@ package org.example.mapper;
 import org.example.dto.response.project.ProjectResponse;
 import org.example.dto.response.form.FormSummary;
 import org.example.dto.response.user.UserSummary;
-import org.example.dto.request.ProjectCreationRequest;
+import org.example.dto.request.project.ProjectCreationRequest;
 import org.example.entity.project.Project;
 import org.example.entity.form.Form;
 import org.example.entity.user.UserProject;

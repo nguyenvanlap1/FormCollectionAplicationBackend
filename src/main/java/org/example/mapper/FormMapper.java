@@ -15,6 +15,8 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface FormMapper {
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "formAnswers", ignore = true)
     @Mapping(target = "project", ignore = true)
     @Mapping(target = "questions", source = "questions", qualifiedByName = "mapQuestions")
     Form toForm(FormCreationRequest request);

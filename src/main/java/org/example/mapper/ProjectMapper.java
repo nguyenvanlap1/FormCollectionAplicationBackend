@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring")
 public interface ProjectMapper {
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "forms", ignore = true)
     @Mapping(target = "userProjects", ignore = true) // Sẽ gán riêng trong service
     Project toProject(ProjectCreationRequest request);
 

@@ -15,6 +15,10 @@ import org.mapstruct.factory.Mappers;
 public interface QuestionMapper {
     QuestionMapper INSTANCE = Mappers.getMapper(QuestionMapper.class);
 
+    TextQuestion toTextQuestion(QuestionRequest object);
+    RadioQuestion toRadioQuestion(QuestionRequest object);
+    CheckboxQuestion toCheckBoxtQuestion(QuestionRequest object);
+
     @Mapping(target = "options", ignore = true)
     @Mapping(target = "userAnswer", ignore = true)
     QuestionResponse toQuestionResponse(TextQuestion question);

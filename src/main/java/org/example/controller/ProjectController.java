@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.example.dto.request.project.ProjectCreationRequest;
+import org.example.dto.request.project.ProjectUpdateRequest;
 import org.example.dto.response.authentication.ApiResponse;
 import org.example.dto.response.project.ProjectResponse;
 import org.example.service.ProjectService;
@@ -34,4 +35,20 @@ public class ProjectController {
         apiResponse.setResult(projectService.getUserProjects());
         return apiResponse;
     }
+
+    @PutMapping("/{projectId}")
+    ApiResponse<ProjectResponse> updateProject(@PathVariable String projectId, @RequestBody ProjectUpdateRequest request){
+        ApiResponse<ProjectResponse> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(projectService.updateProject(projectId, request));
+        return apiResponse;
+    }
+
+    @DeleteMapping("/{projectId}")
+    ApiResponse<ProjectResponse> deleteProject(@PathVariable String projectId){
+        projectService.deleteProject(projectId);
+        ApiResponse<ProjectResponse> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(null);
+        return apiResponse;
+    }
+
 }

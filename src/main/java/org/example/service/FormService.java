@@ -13,6 +13,7 @@ import org.example.entity.user.User;
 import org.example.entity.user.UserProject;
 import org.example.exception.AppException;
 import org.example.mapper.FormMapper;
+import org.example.reposity.FormRepository;
 import org.example.reposity.ProjectRepository;
 import org.example.reposity.UserRepository;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,7 +29,7 @@ import org.example.reposity.UserProjectRepository;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FormService {
     FormMapper formMapper;
-    org.example.repository.FormRepository formRepository;
+    FormRepository formRepository;
     ProjectRepository projectRepository;
     UserProjectRepository userProjectRepository;
     UserRepository userRepository;

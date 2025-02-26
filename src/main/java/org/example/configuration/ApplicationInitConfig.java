@@ -28,6 +28,7 @@ public class ApplicationInitConfig {
             if(userRepository.findByUsername("admin").isEmpty()){
                 var roles = new HashSet<String>();
                 roles.add(Role.ADMIN.name());
+                roles.add(Role.USER.name());
 
                 User user = User.builder()
                         .username("admin")

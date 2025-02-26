@@ -8,12 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.dto.request.form.FormCreationRequest;
 import org.example.dto.request.form.FormUpdateRequest;
 import org.example.dto.response.form.FormResponse;
-import org.example.dto.response.project.ProjectResponse;
-import org.example.mapper.FormMapper;
 import org.example.service.FormService;
 import org.springframework.web.bind.annotation.*;
 import org.example.dto.response.authentication.ApiResponse;
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -37,5 +34,12 @@ public class FormController {
         ApiResponse<FormResponse> apiResponse = new ApiResponse<>();
         apiResponse.setResult(formService.updateForm(projectId, formId, request));
         return  apiResponse;
+    }
+
+    @GetMapping("{formId}")
+    ApiResponse<FormResponse> GetFormById(@PathVariable String formId) {
+        ApiResponse<FormResponse> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(formService.getFormById(formId));
+        return apiResponse;
     }
 }

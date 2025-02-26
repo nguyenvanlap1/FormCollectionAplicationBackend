@@ -1,4 +1,4 @@
-package org.example.dto.response.form;
+package org.example.dto.response.user;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,8 +8,10 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class FormSummary {
+public class UserProjectRoleResponse {
     String id;
-    String name;
-    String introduction;
+    String firstName;
+    String lastName;
+    String role;
 }
+

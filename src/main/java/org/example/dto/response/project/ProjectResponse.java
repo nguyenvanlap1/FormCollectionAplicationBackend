@@ -2,7 +2,7 @@ package org.example.dto.response.project;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.example.dto.response.user.UserSummary;
+import org.example.dto.response.user.UserProjectRoleResponse;
 import org.example.dto.response.form.FormSummary;
 
 import java.util.Set;
@@ -16,6 +16,6 @@ public class ProjectResponse {
     String id;
     String name;
     String description;
-    Set<UserSummary> users;
+    Set<UserProjectRoleResponse> users;
     Set<FormSummary> forms;
 }

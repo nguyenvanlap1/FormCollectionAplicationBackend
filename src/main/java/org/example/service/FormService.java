@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.example.dto.enums.ErrorCode;
+import org.example.dto.enums.ProjectRole;
 import org.example.dto.request.form.FormCreationRequest;
 import org.example.dto.request.form.FormUpdateRequest;
 import org.example.dto.response.form.FormResponse;
@@ -27,9 +28,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.example.entity.form.Form;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -69,6 +68,18 @@ public class FormService {
         form.getQuestions().forEach(question -> question.setForm(form));
 
         return formMapper.toFormResponse(formRepository.save(form));
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    public FormResponse getFormById(String formId) {
+        User user = getUser();
+        Form form = formRepository.findById(formId)
+                .orElseThrow(() -> new AppException(ErrorCode.RESOURCE_NOT_FOUND));
+
+        if(!hasPermission(user.getId(), form.getProject().getId())) {
+            throw new AppException(ErrorCode.FORBIDDEN);
+        }
+        return formMapper.toFormResponse(form);
     }
 
     @PreAuthorize("hasRole('USER')")
@@ -117,14 +128,31 @@ public class FormService {
 
         return formMapper.toFormResponse(formRepository.save(form));
     }
+//    ????????? tôi tạo hàm mới rồi ??????
+    /* Kiểm tra người dùng có phải là chử của dự án hay không */
+//    private boolean hasPermission(String userId, String projectId){
+//        if(userProjectRepository.findOwnerIdsByProjectId(projectId).contains(userId)){
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
 
     /* Kiểm tra người dùng có phải là chử của dự án hay không*/
     private boolean hasPermission(String userId, String projectId){
-        if(userProjectRepository.findOwnerIdsByProjectId(projectId).contains(userId)){
-            return true;
-        } else {
-            return false;
+        try {
+        UserProject userProject = userProjectRepository.findByUserIdAndProjectId(userId, projectId)
+                .orElseThrow(() -> new AppException(ErrorCode.RESOURCE_NOT_FOUND));
+
+            if(ProjectRole.OWNER.name().equals(userProject.getRoles())) {
+                return true;
+            }
+
+        } catch (NoSuchElementException e) {
+            throw new AppException(ErrorCode.RESOURCE_NOT_FOUND);
         }
+
+        return false;
     }
 
     /* Lấy tên của người dùng hiện tại */

@@ -3,6 +3,9 @@ package org.example.dto.response.user;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
+import java.util.Set;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -12,6 +15,5 @@ public class UserSummary {
     String id;
     String firstName;
     String lastName;
-    String role;
+    Set<String> roles;
 }
-

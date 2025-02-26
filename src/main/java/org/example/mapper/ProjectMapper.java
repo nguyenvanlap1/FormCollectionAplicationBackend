@@ -2,7 +2,7 @@ package org.example.mapper;
 
 import org.example.dto.response.project.ProjectResponse;
 import org.example.dto.response.form.FormSummary;
-import org.example.dto.response.user.UserSummary;
+import org.example.dto.response.user.UserProjectRoleResponse;
 import org.example.dto.request.project.ProjectCreationRequest;
 import org.example.entity.project.Project;
 import org.example.entity.form.Form;
@@ -28,9 +28,9 @@ public interface ProjectMapper {
     ProjectResponse toProjectResponse(Project project);
 
     @Named("mapUsers")
-    default Set<UserSummary> mapUsers(Set<UserProject> userProjects) {
+    default Set<UserProjectRoleResponse> mapUsers(Set<UserProject> userProjects) {
         return userProjects.stream()
-                .map(up -> new UserSummary(
+                .map(up -> new UserProjectRoleResponse(
                         up.getUser().getId(),
                         up.getUser().getFirstName(),
                         up.getUser().getLastName(),
@@ -45,7 +45,7 @@ public interface ProjectMapper {
             return new HashSet<>(); // Tránh NullPointerException
         }
         return forms.stream()
-                .map(f -> new FormSummary(f.getId(), f.getName()))
+                .map(f -> new FormSummary(f.getId(), f.getName(), f.getIntroduction()))
                 .collect(Collectors.toSet());
     }
 

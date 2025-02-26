@@ -32,7 +32,7 @@ public class FormAnswer {
    User user;
 
    @OneToMany(mappedBy = "formAnswer", cascade = CascadeType.ALL, orphanRemoval = true)
-   List<Answer> answer;
+   List<Answer> answers;
 
    @ManyToOne
    @JoinColumn(name = "form_id")

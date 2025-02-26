@@ -14,6 +14,7 @@ import org.example.exception.AppException;
 import org.example.mapper.UserMapper;
 import org.example.reposity.UserRepository;
 import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -55,8 +56,8 @@ public class UserService {
         return userMapper.toUserResponse(user);
     }
 
-    //    @PreAuthorize("hasRole('ADMIN')")
 //    @PreAuthorize("hasAuthority('APPROVE_POST')")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<User> getUser() {
         log.info("In method get Users");
         return userRepository.findAll();
@@ -80,6 +81,7 @@ public class UserService {
         return userMapper.toUserResponse(userRepository.save(user));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteUser(String id) {
         userRepository.deleteById(id);
     }

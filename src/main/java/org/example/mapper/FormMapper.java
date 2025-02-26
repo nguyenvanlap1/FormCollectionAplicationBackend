@@ -40,7 +40,7 @@ public interface FormMapper {
     default List<Question> mapQuestions(List<QuestionRequest> questionRequests) {
         if (questionRequests == null) return null;
         return questionRequests.stream()
-                .map(QuestionMapper.INSTANCE::mapToQuestion) // Gọi `mapQuestion` từ `QuestionMapper`
+                .map(QuestionMapper.INSTANCE::mapToQuestion)
                 .collect(Collectors.toList());
     }
 }

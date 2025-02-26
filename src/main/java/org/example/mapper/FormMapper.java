@@ -1,6 +1,7 @@
 package org.example.mapper;
 
 import org.example.dto.request.form.FormCreationRequest;
+import org.example.dto.request.form.FormUpdateRequest;
 import org.example.dto.request.question.QuestionRequest;
 import org.example.dto.response.form.FormResponse;
 import org.example.dto.response.question.QuestionResponse;
@@ -20,6 +21,10 @@ public interface FormMapper {
     @Mapping(target = "project", ignore = true)
     @Mapping(target = "questions", source = "questions", qualifiedByName = "mapQuestions")
     Form toForm(FormCreationRequest request);
+
+    @Mapping(target = "project", ignore = true)
+    @Mapping(target = "questions", source = "questions", qualifiedByName = "mapQuestions")
+    Form toForm(FormUpdateRequest request);
 
     @Mapping(source = "questions", target = "questions", qualifiedByName = "mapQuestionsResponse") // Chuyển danh sách câu hỏi
     FormResponse toFormResponse(Form form);

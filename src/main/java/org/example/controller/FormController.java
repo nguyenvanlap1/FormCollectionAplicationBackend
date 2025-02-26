@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.example.dto.request.form.FormCreationRequest;
+import org.example.dto.request.form.FormUpdateRequest;
 import org.example.dto.response.form.FormResponse;
 import org.example.dto.response.project.ProjectResponse;
 import org.example.mapper.FormMapper;
@@ -16,17 +17,25 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/forms")
+@RequestMapping("/projects/{projectId}/forms")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FormController {
     FormService formService;
 
     @PostMapping
-    ApiResponse<FormResponse> createForm(@RequestBody @Valid FormCreationRequest request) {
+    ApiResponse<FormResponse> createForm(@PathVariable String projectId,
+                                         @RequestBody @Valid FormCreationRequest request) {
         ApiResponse<FormResponse> apiResponse = new ApiResponse<>();
-        apiResponse.setResult(formService.creatForm(request));
+        apiResponse.setResult(formService.createForm(projectId, request));
+        return  apiResponse;
+    }
 
+    @PutMapping("/{formId}")
+    ApiResponse<FormResponse> updateForm(@PathVariable String projectId, @PathVariable String formId,
+                                         @RequestBody @Valid FormUpdateRequest request) {
+        ApiResponse<FormResponse> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(formService.updateForm(projectId, formId, request));
         return  apiResponse;
     }
 }

@@ -22,6 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -102,4 +103,35 @@ public class ProjectService {
         projectRepository.deleteById(projectId);
     }
 
+    public ProjectResponse getUserProjectById(String projectId) {
+
+        User user = getUser();
+        hasPermission(user.getId(), projectId);
+
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new AppException(ErrorCode.RESOURCE_NOT_FOUND));
+        return projectMapper.toProjectResponse(project);
+    }
+
+    private boolean hasPermission(String userId, String projectId){
+        try {
+            UserProject userProject = userProjectRepository.findByUserIdAndProjectId(userId, projectId)
+                    .orElseThrow(() -> new AppException(ErrorCode.RESOURCE_NOT_FOUND));
+
+            if(ProjectRole.OWNER.name().equals(userProject.getRoles())) {
+                return true;
+            }
+
+        } catch (NoSuchElementException e) {
+            throw new AppException(ErrorCode.RESOURCE_NOT_FOUND);
+        }
+
+        return false;
+    }
+
+    private User getUser(){
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+    }
 }

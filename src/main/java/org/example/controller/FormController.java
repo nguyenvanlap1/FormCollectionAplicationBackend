@@ -36,7 +36,7 @@ public class FormController {
         return  apiResponse;
     }
 
-    @GetMapping("{formId}")
+    @GetMapping("/{formId}")
     ApiResponse<FormResponse> GetFormById(@PathVariable String formId) {
         ApiResponse<FormResponse> apiResponse = new ApiResponse<>();
         apiResponse.setResult(formService.getFormById(formId));

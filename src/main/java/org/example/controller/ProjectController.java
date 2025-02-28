@@ -36,6 +36,13 @@ public class ProjectController {
         return apiResponse;
     }
 
+    @GetMapping("/{projectId}")
+    ApiResponse<ProjectResponse> getUserProject(@PathVariable String projectId){
+        ApiResponse<ProjectResponse> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(projectService.getUserProjectById(projectId));
+        return apiResponse;
+    }
+
     @PutMapping("/{projectId}")
     ApiResponse<ProjectResponse> updateProject(@PathVariable String projectId, @RequestBody ProjectUpdateRequest request){
         ApiResponse<ProjectResponse> apiResponse = new ApiResponse<>();

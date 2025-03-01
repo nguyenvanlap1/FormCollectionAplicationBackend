@@ -138,6 +138,20 @@ public class FormService {
 //        }
 //    }
 
+    public String deleteFormById(String formId) {
+        User user = getUser();
+        Form form = formRepository.findById(formId)
+                .orElseThrow(() -> new AppException(ErrorCode.RESOURCE_NOT_FOUND));
+
+        if(!hasPermission(user.getId(), form.getProject().getId())) {
+            throw new AppException(ErrorCode.FORBIDDEN);
+        }
+
+        formRepository.deleteById(form.getId());
+
+        return "Form has been delete";
+    }
+
     /* Kiểm tra người dùng có phải là chử của dự án hay không*/
     private boolean hasPermission(String userId, String projectId){
         try {

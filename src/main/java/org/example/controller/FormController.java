@@ -9,6 +9,7 @@ import org.example.dto.request.form.FormCreationRequest;
 import org.example.dto.request.form.FormUpdateRequest;
 import org.example.dto.response.form.FormResponse;
 import org.example.service.FormService;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.example.dto.response.authentication.ApiResponse;
 
@@ -40,6 +41,13 @@ public class FormController {
     ApiResponse<FormResponse> GetFormById(@PathVariable String formId) {
         ApiResponse<FormResponse> apiResponse = new ApiResponse<>();
         apiResponse.setResult(formService.getFormById(formId));
+        return apiResponse;
+    }
+
+    @DeleteMapping("/{formId}")
+    ApiResponse<String> DeleteFormById(@PathVariable String formId) {
+        ApiResponse<String> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(formService.deleteFormById(formId));
         return apiResponse;
     }
 }

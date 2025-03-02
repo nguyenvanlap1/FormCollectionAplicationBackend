@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class UserController {
     UserService userService;
     UserMapper userMapper;
 
+    @Operation(summary = "Tạo người dùng", description = "API này dùng để tạo một người dùng mới.")
     @PostMapping
     ApiResponse<UserResponse> createUser(@RequestBody @Valid UserCreationRequest request) {
         ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
@@ -33,6 +35,7 @@ public class UserController {
         return apiResponse;
     }
 
+    @Operation(summary = "Lấy danh sách người dùng", description = "API này trả về danh sách tất cả người dùng.")
     @GetMapping
     public ApiResponse<List<User>> getUser(){
         var authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -45,6 +48,7 @@ public class UserController {
         return apiResponse;
     };
 
+    @Operation(summary = "Lấy thông tin người dùng", description = "Trả về thông tin chi tiết của một người dùng dựa trên ID.")
     @GetMapping("/{userId}")
     public ApiResponse<UserResponse> getUser(@PathVariable("userId") String userId){
         ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
@@ -52,6 +56,7 @@ public class UserController {
         return apiResponse;
     }
 
+    @Operation(summary = "Lấy thông tin cá nhân", description = "Trả về thông tin của người dùng đang đăng nhập.")
     @GetMapping("/myInfo")
     public ApiResponse<UserResponse> getMyInfo() {
         return ApiResponse.<UserResponse>builder()
@@ -59,6 +64,7 @@ public class UserController {
                 .build();
     }
 
+    @Operation(summary = "Cập nhật thông tin người dùng", description = "Cập nhật thông tin người dùng dựa trên ID.")
     @PutMapping("/{userId}")
     public ApiResponse<UserResponse> updateUser(@PathVariable("userId") String userId, @RequestBody UserUpdateRequest request){
         ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
@@ -66,6 +72,7 @@ public class UserController {
         return apiResponse;
     }
 
+    @Operation(summary = "Xóa người dùng", description = "Xóa một người dùng khỏi hệ thống dựa trên ID.")
     @DeleteMapping("/{userId}")
     String deleteUser(@PathVariable("userId") String userId) {
         userService.deleteUser(userId);

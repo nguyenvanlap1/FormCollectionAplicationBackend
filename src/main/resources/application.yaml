@@ -5,8 +5,8 @@ server:
 
 spring:
   datasource:
-    url: "jdbc:mysql://my-mysql:3306/form_collection_db"
-#    url: "jdbc:mysql://localhost:3306/form_collection_db"
+    #url: "jdbc:mysql://my-mysql:3306/form_collection_db"
+    url: "jdbc:mysql://localhost:3306/form_collection_db"
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -19,10 +19,10 @@ spring:
 springdoc:
   api-docs:
     enabled: true
-    path: /v3/api-docs  # ❌ Không cần /api ở đây
+    path: /v3/api-docs
   swagger-ui:
     enabled: true
-    path: /swagger-ui  # ❌ Không cần /api ở đây
+    path: /swagger-ui
     operations-sorter: method
     doc-expansion: none
 

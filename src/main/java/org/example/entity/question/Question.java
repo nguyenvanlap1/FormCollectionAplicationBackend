@@ -21,8 +21,8 @@ import java.util.List;
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Inheritance(strategy = InheritanceType.JOINED) // Dùng chiến lược JOINED
-public abstract class Question { // Đặt là abstract nếu không tạo bản ghi trực tiếp
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Question {
    @Id
    @GeneratedValue(strategy = GenerationType.UUID)
    String id;

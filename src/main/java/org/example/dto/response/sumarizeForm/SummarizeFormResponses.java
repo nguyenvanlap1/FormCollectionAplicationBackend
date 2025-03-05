@@ -11,6 +11,6 @@ import org.example.dto.response.form.FormSummary;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SummarizeFormResponses {
     FormSummary form;
-    String [] questions;
-    String []
+//    String [] questions;
+//    String []
 }

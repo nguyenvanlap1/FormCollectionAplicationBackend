@@ -47,10 +47,10 @@ public class FormService {
 
     QuestionMapper questionMapper;
 
-    @PreAuthorize("hasRole('USER')")
-    public Object summarizeForm(){
-
-    }
+//    @PreAuthorize("hasRole('USER')")
+//    public Object summarizeForm(){
+//
+//    }
 
     @PreAuthorize("hasRole('USER')")
     public FormResponse createForm(String projectId, FormCreationRequest request) {

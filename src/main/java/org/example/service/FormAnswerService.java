@@ -24,6 +24,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Service
@@ -76,5 +78,12 @@ public class FormAnswerService {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+    }
+
+    public List<FormAnswerResponse> getAllAnswersResponse(String formId) {
+        List<FormAnswer> formAnswers = formAnswerRepository.findByFormId(formId);
+        return formAnswers.stream()
+                .map(formAnswerMapper::toFormAnswerResponse)
+                .collect(Collectors.toList());
     }
 }

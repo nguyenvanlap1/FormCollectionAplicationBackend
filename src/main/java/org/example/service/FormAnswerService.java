@@ -5,10 +5,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.example.dto.enums.ErrorCode;
+import org.example.dto.enums.FormStatus;
 import org.example.dto.request.form.FormCreationRequest;
 import org.example.dto.request.formAnswer.FormAnswerRequest;
 import org.example.dto.response.formAnswer.FormAnswerResponse;
 import org.example.entity.answer.Answer;
+import org.example.entity.form.Form;
 import org.example.entity.form.FormAnswer;
 import org.example.entity.question.Question;
 import org.example.entity.user.User;
@@ -39,8 +41,18 @@ public class FormAnswerService {
     public FormAnswerResponse createFormAnswerResponse(FormAnswerRequest request, String formId){
         FormAnswer formAnswer = formAnswerMapper.toFormAnswer(request);
 
-        formAnswer.setForm(formRepository.findById(formId)
-                .orElseThrow(() -> new AppException(ErrorCode.RESOURCE_NOT_FOUND)));
+        Form form = formRepository.findById(formId)
+                .orElseThrow(() -> new AppException(ErrorCode.RESOURCE_NOT_FOUND));
+
+        if(form.getStatus().equals(FormStatus.UNOPENED.name())) {
+            throw new AppException(ErrorCode.FORM_IS_NOT_OPENED);
+        }
+
+        if(form.getStatus().equals(FormStatus.CLOSE.name())) {
+            throw new AppException(ErrorCode.FORM_IS_CLOSED);
+        }
+
+        formAnswer.setForm(form);
 
         formAnswer.setUser(getUser());
 

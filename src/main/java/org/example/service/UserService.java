@@ -15,13 +15,14 @@ import org.example.mapper.UserMapper;
 import org.example.reposity.UserRepository;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -58,9 +59,9 @@ public class UserService {
 
 //    @PreAuthorize("hasAuthority('APPROVE_POST')")
     @PreAuthorize("hasRole('ADMIN')")
-    public List<User> getUser() {
+    public List<UserResponse> getUser() {
         log.info("In method get Users");
-        return userRepository.findAll();
+        return userRepository.findAll().stream().map(userMapper::toUserResponse).toList();
     }
 
     @PostAuthorize("returnObject.username == authentication.name")
@@ -72,11 +73,18 @@ public class UserService {
     public UserResponse updateUser(String userId, UserUpdateRequest request) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 
-        Set<String> roles = new HashSet<>(user.getRoles());
+        List<String> roles = getRolesFromJwt();
+        var context = SecurityContextHolder.getContext();
+        String name = context.getAuthentication().getName();
+        System.out.println("Roles: " + roles);
+        if(!roles.contains("ROLE_"+ Role.ADMIN.name()) && !name.equals(user.getUsername())) {
+            throw new AppException(ErrorCode.FORBIDDEN);
+        }
         userMapper.updateUser(user, request);
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        if(!Objects.isNull(request.getPassword())){
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        user.setRoles(roles);
+        }
 
         return userMapper.toUserResponse(userRepository.save(user));
     }
@@ -84,5 +92,19 @@ public class UserService {
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteUser(String id) {
         userRepository.deleteById(id);
+    }
+
+    private List<String> getRolesFromJwt() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication instanceof JwtAuthenticationToken jwtAuth) {
+            // Lấy giá trị từ claim "scope"
+            String scope = jwtAuth.getToken().getClaim("scope");
+
+            // Tách scope thành danh sách quyền
+            return scope != null ? Arrays.asList(scope.split(" ")) : List.of();
+        }
+
+        return List.of();
     }
 }

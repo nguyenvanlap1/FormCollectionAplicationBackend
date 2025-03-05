@@ -5,8 +5,10 @@ import org.example.dto.request.user.UserUpdateRequest;
 import org.example.dto.response.user.UserResponse;
 import org.example.dto.response.user.UserSummary;
 import org.example.entity.user.User;
+import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
@@ -17,6 +19,8 @@ public interface UserMapper {
 
     // @Mapping(source = "firstName", target = "lastName")
     UserResponse toUserResponse(User user);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateUser(@MappingTarget User user, UserUpdateRequest request);
 
     UserSummary toUserSummary(User user);

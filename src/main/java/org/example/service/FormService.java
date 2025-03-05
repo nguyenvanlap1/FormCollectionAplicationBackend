@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.example.dto.enums.ErrorCode;
+import org.example.dto.enums.FormStatus;
 import org.example.dto.enums.ProjectRole;
 import org.example.dto.request.form.FormCreationRequest;
 import org.example.dto.request.form.FormUpdateRequest;
@@ -47,6 +48,11 @@ public class FormService {
     QuestionMapper questionMapper;
 
     @PreAuthorize("hasRole('USER')")
+    public Object summarizeForm(){
+
+    }
+
+    @PreAuthorize("hasRole('USER')")
     public FormResponse createForm(String projectId, FormCreationRequest request) {
 
         Project project = projectRepository.findById(projectId)
@@ -63,6 +69,7 @@ public class FormService {
 
         form.setProject(project);
         project.getForms().add(form);
+        form.setStatus(FormStatus.UNOPENED.name());
 
         formRepository.save(form);
         form.getQuestions().forEach(question -> question.setForm(form));
@@ -97,6 +104,10 @@ public class FormService {
         }
         Form form = formRepository.findById(formId)
                 .orElseThrow(() -> new AppException(ErrorCode.RESOURCE_NOT_FOUND));
+
+        if(!form.getStatus().equals(FormStatus.UNOPENED)) {
+            throw new AppException(ErrorCode.FORM_OPENED);
+        }
 
         if(!form.getProject().getId().equals(projectId)){
             throw new AppException(ErrorCode.FORBIDDEN);
@@ -138,6 +149,7 @@ public class FormService {
 //        }
 //    }
 
+    @PreAuthorize("hasRole('USER')")
     public String deleteFormById(String formId) {
         User user = getUser();
         Form form = formRepository.findById(formId)
@@ -150,6 +162,44 @@ public class FormService {
         formRepository.deleteById(form.getId());
 
         return "Form has been delete";
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    public String publishForm(String formId) {
+        User user = getUser();
+
+        Form form = formRepository.findById(formId).orElseThrow(()-> new AppException(ErrorCode.RESOURCE_NOT_FOUND));
+
+        Project project =  form.getProject();
+
+        if(!hasPermission(user.getId(), project.getId())){
+            throw new AppException(ErrorCode.FORBIDDEN);
+        }
+
+        form.setStatus(FormStatus.OPEN.name());
+
+        formRepository.save(form);
+
+        return "Form is opened";
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    public String closeForm(String formId) {
+        User user = getUser();
+
+        Form form = formRepository.findById(formId).orElseThrow(()-> new AppException(ErrorCode.RESOURCE_NOT_FOUND));
+
+        Project project =  form.getProject();
+
+        if(!hasPermission(user.getId(), project.getId())){
+            throw new AppException(ErrorCode.FORBIDDEN);
+        }
+
+        form.setStatus(FormStatus.CLOSE.name());
+
+        formRepository.save(form);
+
+        return "form is closed";
     }
 
     /* Kiểm tra người dùng có phải là chử của dự án hay không*/

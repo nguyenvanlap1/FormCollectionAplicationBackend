@@ -5,8 +5,8 @@ server:
 
 spring:
   datasource:
-    url: "jdbc:mysql://my-mysql:3306/form_collection_db"
-#    url: "jdbc:mysql://localhost:3306/form_collection_db"
+#    url: "jdbc:mysql://my-mysql:3306/form_collection_db"
+    url: "jdbc:mysql://localhost:3306/form_collection_db"
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -32,4 +32,3 @@ jwt:
 logging:
   level:
     org.springframework.security: DEBUG
-

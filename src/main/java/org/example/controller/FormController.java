@@ -50,4 +50,20 @@ public class FormController {
         apiResponse.setResult(formService.deleteFormById(formId));
         return apiResponse;
     }
+
+    @PostMapping("/{formId}/publish")
+    ApiResponse<String> publishForm(@PathVariable String formId) {
+        ApiResponse<String> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(formService.publishForm(formId));
+
+        return apiResponse;
+    }
+
+    @PostMapping("/{formId}/close")
+    ApiResponse<String> closeForm(@PathVariable String formId) {
+        ApiResponse<String> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(formService.closeForm(formId));
+
+        return apiResponse;
+    }
 }

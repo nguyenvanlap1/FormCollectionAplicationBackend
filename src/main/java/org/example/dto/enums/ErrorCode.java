@@ -17,7 +17,10 @@ public enum ErrorCode {
     INVALID_DOB(1008, "Your age must be at least {min}", HttpStatus.BAD_REQUEST),
     PROJECT_NOT_EXISTED(1009, "Project not existed", HttpStatus.NOT_FOUND),
     FORBIDDEN(1010, "You are not part of this project", HttpStatus.FORBIDDEN),
-    RESOURCE_NOT_FOUND(1011, "Resource not found", HttpStatus.NOT_FOUND);
+    RESOURCE_NOT_FOUND(1011, "Resource not found", HttpStatus.NOT_FOUND),
+    FORM_OPENED(1012,"Form is opened", HttpStatus.BAD_REQUEST),
+    FORM_IS_NOT_OPENED(1013,"Form is not opened",HttpStatus.FORBIDDEN),
+    FORM_IS_CLOSED(1014,"Form is closed", HttpStatus.FORBIDDEN),
     ;
 
     private final int code;

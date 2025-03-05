@@ -29,6 +29,7 @@ public class Form {
 
    String name;
    String introduction;
+   String status;
 
    @ManyToOne
    @JoinColumn(name = "project_id")

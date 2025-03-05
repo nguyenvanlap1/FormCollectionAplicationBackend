@@ -37,22 +37,14 @@ public class UserController {
 
     @Operation(summary = "Lấy danh sách người dùng", description = "API này trả về danh sách tất cả người dùng.")
     @GetMapping
-    public ApiResponse<List<User>> getUser(){
+    public ApiResponse<List<UserResponse>> getUser(){
         var authentication = SecurityContextHolder.getContext().getAuthentication();
 
         log.info("Username: {}", authentication.getName());
         authentication.getAuthorities().forEach(grantedAuthority -> log.info(grantedAuthority.getAuthority()));
 
-        ApiResponse<List<User>> apiResponse = new ApiResponse<>();
+        ApiResponse<List<UserResponse>> apiResponse = new ApiResponse<>();
         apiResponse.setResult(userService.getUser());
-        return apiResponse;
-    };
-
-    @Operation(summary = "Lấy thông tin người dùng", description = "Trả về thông tin chi tiết của một người dùng dựa trên ID.")
-    @GetMapping("/{userId}")
-    public ApiResponse<UserResponse> getUser(@PathVariable("userId") String userId){
-        ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
-        apiResponse.setResult(userService.getUser(userId));
         return apiResponse;
     }
 
@@ -62,6 +54,14 @@ public class UserController {
         return ApiResponse.<UserResponse>builder()
                 .result(userService.getMyInfo())
                 .build();
+    }
+
+    @Operation(summary = "Lấy thông tin người dùng", description = "Trả về thông tin chi tiết của một người dùng dựa trên ID.")
+    @GetMapping("/{userId}")
+    public ApiResponse<UserResponse> getUser(@PathVariable("userId") String userId){
+        ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(userService.getUser(userId));
+        return apiResponse;
     }
 
     @Operation(summary = "Cập nhật thông tin người dùng", description = "Cập nhật thông tin người dùng dựa trên ID.")

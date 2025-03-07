@@ -4,6 +4,8 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.example.dto.response.form.FormSummary;
 
+import java.util.Map;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -11,6 +13,5 @@ import org.example.dto.response.form.FormSummary;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SummarizeFormResponses {
     FormSummary form;
-//    String [] questions;
-//    String []
+    private Map<String, Object> rowData;
 }

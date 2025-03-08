@@ -14,5 +14,6 @@ public class FormResponse {
     private String id;
     private String name;
     private String introduction;
+    private String status;
     private List<QuestionResponse> questions;
 }

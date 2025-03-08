@@ -12,4 +12,5 @@ public class FormSummary {
     String id;
     String name;
     String introduction;
+    String status;
 }

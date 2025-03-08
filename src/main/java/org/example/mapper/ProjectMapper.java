@@ -45,7 +45,7 @@ public interface ProjectMapper {
             return new HashSet<>(); // Tránh NullPointerException
         }
         return forms.stream()
-                .map(f -> new FormSummary(f.getId(), f.getName(), f.getIntroduction()))
+                .map(f -> new FormSummary(f.getId(), f.getName(), f.getIntroduction(), f.getStatus()))
                 .collect(Collectors.toSet());
     }
 

@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.dto.request.form.FormCreationRequest;
 import org.example.dto.request.form.FormUpdateRequest;
 import org.example.dto.response.form.FormResponse;
+import org.example.dto.response.form.FormSummarizeResponses;
 import org.example.service.FormService;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,13 @@ import org.example.dto.response.authentication.ApiResponse;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FormController {
     FormService formService;
+
+    @GetMapping("/{formId}/summarize")
+    ApiResponse<FormSummarizeResponses> summarizeForm(@PathVariable String formId) {
+        ApiResponse<FormSummarizeResponses> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(formService.summarizeForm(formId));
+        return apiResponse;
+    }
 
     @PostMapping
     ApiResponse<FormResponse> createForm(@PathVariable String projectId,

@@ -11,11 +11,11 @@ import org.example.dto.enums.ProjectRole;
 import org.example.dto.request.form.FormCreationRequest;
 import org.example.dto.request.form.FormUpdateRequest;
 import org.example.dto.response.form.FormResponse;
-import org.example.dto.response.question.QuestionResponse;
-import org.example.entity.form.FormAnswer;
+import org.example.dto.response.form.FormSummarizeResponses;
+import org.example.dto.response.form.FormSummary;
+import org.example.entity.answer.Answer;
 import org.example.entity.project.Project;
 import org.example.entity.question.CheckboxQuestion;
-import org.example.entity.question.Question;
 import org.example.entity.question.RadioQuestion;
 import org.example.entity.question.TextQuestion;
 import org.example.entity.user.User;
@@ -30,7 +30,6 @@ import org.springframework.stereotype.Service;
 import org.example.entity.form.Form;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -47,10 +46,42 @@ public class FormService {
 
     QuestionMapper questionMapper;
 
-//    @PreAuthorize("hasRole('USER')")
-//    public Object summarizeForm(){
-//
-//    }
+    @PreAuthorize("hasRole('USER')")
+    public FormSummarizeResponses summarizeForm(String formId) {
+        User user = getUser();
+        Form form = formRepository.findById(formId)
+                .orElseThrow(() -> new AppException(ErrorCode.RESOURCE_NOT_FOUND));
+        Project project = form.getProject();
+
+        if (!hasPermission(user.getId(), project.getId())) {
+            throw new AppException(ErrorCode.FORBIDDEN);
+        }
+
+        List<Map<String, Object>> responses = new ArrayList<>();
+
+        // Duyệt qua từng FormAnswer
+        form.getFormAnswers().forEach(formAnswer -> {
+            Map<String, Object> rowData = new LinkedHashMap<>();
+            rowData.put("User name", formAnswer.getUser().getUsername());
+
+            // Duyệt qua từng câu trả lời của user
+            formAnswer.getAnswers().stream()
+                    .sorted(Comparator.comparing(a -> a.getQuestion().getNumericalOrder())) // Sắp xếp theo thứ tự câu hỏi
+                    .forEach(answer -> {
+                        rowData.put(answer.getQuestion().getQuestion(), answer.getAnswer());
+                    });
+
+            responses.add(rowData);
+        });
+
+        return FormSummarizeResponses.builder()
+                .form(FormSummary.builder()
+                        .id(form.getId())
+                        .introduction(form.getIntroduction())
+                        .name(form.getName()).build())
+                .rowData(responses)
+                .build();
+    }
 
     @PreAuthorize("hasRole('USER')")
     public FormResponse createForm(String projectId, FormCreationRequest request) {

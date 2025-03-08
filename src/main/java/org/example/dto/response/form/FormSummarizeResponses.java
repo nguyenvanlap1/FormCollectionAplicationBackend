@@ -1,17 +1,17 @@
-package org.example.dto.response.sumarizeForm;
+package org.example.dto.response.form;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.example.dto.response.form.FormSummary;
 
 import java.util.Map;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class SummarizeFormResponses {
+public class FormSummarizeResponses {
     FormSummary form;
-    private Map<String, Object> rowData;
+    private List<Map<String, Object>> rowData;
 }

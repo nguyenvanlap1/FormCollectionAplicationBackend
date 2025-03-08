@@ -136,7 +136,7 @@ public class FormService {
         Form form = formRepository.findById(formId)
                 .orElseThrow(() -> new AppException(ErrorCode.RESOURCE_NOT_FOUND));
 
-        if(!form.getStatus().equals(FormStatus.UNOPENED)) {
+        if(!form.getStatus().equals(FormStatus.UNOPENED.toString())) {
             throw new AppException(ErrorCode.FORM_OPENED);
         }
 

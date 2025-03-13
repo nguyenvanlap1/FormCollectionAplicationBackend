@@ -21,7 +21,7 @@ public enum ErrorCode {
     FORM_OPENED(1012,"Form is opened", HttpStatus.BAD_REQUEST),
     FORM_IS_NOT_OPENED(1013,"Form is not opened",HttpStatus.FORBIDDEN),
     FORM_IS_CLOSED(1014,"Form is closed", HttpStatus.FORBIDDEN),
-    ;
+    FILE_UPLOAD_ERROR(1015, "File upload error", HttpStatus.INTERNAL_SERVER_ERROR);
 
     private final int code;
     private final HttpStatusCode statusCode;

@@ -21,6 +21,13 @@ public class Answer {
 
    String answer;
 
+   @Lob
+   @Column(columnDefinition = "LONGBLOB")
+   byte[] fileContent;
+
+   String fileName;
+   String fileType;
+
    @ManyToOne
    @JoinColumn(name = "form_answer_id")
    FormAnswer formAnswer;

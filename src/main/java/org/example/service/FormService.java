@@ -16,6 +16,7 @@ import org.example.dto.response.form.FormSummary;
 import org.example.entity.answer.Answer;
 import org.example.entity.project.Project;
 import org.example.entity.question.CheckboxQuestion;
+import org.example.entity.question.FileQuestion;
 import org.example.entity.question.RadioQuestion;
 import org.example.entity.question.TextQuestion;
 import org.example.entity.user.User;
@@ -68,7 +69,18 @@ public class FormService {
             formAnswer.getAnswers().stream()
                     .sorted(Comparator.comparing(a -> a.getQuestion().getNumericalOrder())) // Sắp xếp theo thứ tự câu hỏi
                     .forEach(answer -> {
-                        rowData.put(answer.getQuestion().getQuestion(), answer.getAnswer());
+
+                        Map<String, Object> answerData = new HashMap<>();
+                        answerData.put("text", answer.getAnswer());
+
+                        // Nếu có file, thêm thông tin file vào JSON
+                        if (answer.getFileContent() != null) {
+                            answerData.put("questionId", answer.getId());
+                            answerData.put("fileName", answer.getFileName());
+                            answerData.put("fileType", answer.getFileType());
+                        }
+
+                        rowData.put(answer.getQuestion().getQuestion(), answerData);
                     });
 
             responses.add(rowData);
@@ -165,20 +177,16 @@ public class FormService {
                 radioQuestion.setForm(form);
                 form.getQuestions().add(radioQuestion);
                 questionRepository.save(radioQuestion);
+            } else if(question.getType().equals("FILE")){
+                FileQuestion fileQuestion = questionMapper.toFileQuestion(question);
+                fileQuestion.setForm(form);
+                form.getQuestions().add(fileQuestion);
+                questionRepository.save(fileQuestion);
             };
         });
 
         return formMapper.toFormResponse(formRepository.save(form));
     }
-//    ????????? tôi tạo hàm mới rồi ??????
-    /* Kiểm tra người dùng có phải là chử của dự án hay không */
-//    private boolean hasPermission(String userId, String projectId){
-//        if(userProjectRepository.findOwnerIdsByProjectId(projectId).contains(userId)){
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
 
     @PreAuthorize("hasRole('USER')")
     public String deleteFormById(String formId) {

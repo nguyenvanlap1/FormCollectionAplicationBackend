@@ -3,13 +3,12 @@ package org.example.mapper;
 import org.example.dto.enums.QuestionType;
 import org.example.dto.request.question.QuestionRequest;
 import org.example.dto.response.question.QuestionResponse;
-import org.example.entity.question.CheckboxQuestion;
-import org.example.entity.question.Question;
-import org.example.entity.question.RadioQuestion;
-import org.example.entity.question.TextQuestion;
+import org.example.entity.question.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
+
+import java.io.File;
 
 @Mapper(componentModel = "spring")
 public interface QuestionMapper {
@@ -18,10 +17,15 @@ public interface QuestionMapper {
     TextQuestion toTextQuestion(QuestionRequest object);
     RadioQuestion toRadioQuestion(QuestionRequest object);
     CheckboxQuestion toCheckBoxtQuestion(QuestionRequest object);
+    FileQuestion toFileQuestion(QuestionRequest object);
 
     @Mapping(target = "options", ignore = true)
     @Mapping(target = "userAnswer", ignore = true)
     QuestionResponse toQuestionResponse(TextQuestion question);
+
+    @Mapping(target = "options", ignore = true)
+    @Mapping(target = "userAnswer", ignore = true)
+    QuestionResponse toQuestionResponse(FileQuestion question);
 
     @Mapping(target = "userAnswer", ignore = true)
     @Mapping(source = "options", target = "options")
@@ -36,6 +40,8 @@ public interface QuestionMapper {
             return toRadioQuestionResponse((RadioQuestion) question);
         } else if (question instanceof CheckboxQuestion) {
             return toCheckboxQuestionResponse((CheckboxQuestion) question);
+        } else if(question instanceof FileQuestion) {
+            return toQuestionResponse((FileQuestion) question);
         } else {
             return toQuestionResponse((TextQuestion) question);
         }
@@ -66,6 +72,11 @@ public interface QuestionMapper {
                     .options(questionRequest.getOptions())
                     .build();
             case TEXT -> TextQuestion.builder()
+                    .numericalOrder(questionRequest.getNumericalOrder())
+                    .question(questionRequest.getQuestion())
+                    .type(questionRequest.getType())
+                    .build();
+            case FILE -> FileQuestion.builder()
                     .numericalOrder(questionRequest.getNumericalOrder())
                     .question(questionRequest.getQuestion())
                     .type(questionRequest.getType())

@@ -8,10 +8,14 @@ import org.example.dto.enums.ErrorCode;
 import org.example.dto.enums.Role;
 import org.example.dto.request.user.UserCreationRequest;
 import org.example.dto.request.user.UserUpdateRequest;
+import org.example.dto.response.formAnswer.FormAnswerResponse;
 import org.example.dto.response.user.UserResponse;
+import org.example.entity.form.FormAnswer;
 import org.example.entity.user.User;
 import org.example.exception.AppException;
+import org.example.mapper.FormAnswerMapper;
 import org.example.mapper.UserMapper;
+import org.example.reposity.FormAnswerRepository;
 import org.example.reposity.UserRepository;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,7 +34,9 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserService {
     UserRepository userRepository;
+    FormAnswerRepository formAnswerRepository;
     UserMapper userMapper;
+    FormAnswerMapper formAnswerMapper;
     PasswordEncoder passwordEncoder;
 
     public UserResponse createUser(UserCreationRequest request) {
@@ -106,5 +112,17 @@ public class UserService {
         }
 
         return List.of();
+    }
+
+    public List<FormAnswerResponse> getAllFormAnswers() {
+        var context = SecurityContextHolder.getContext();
+        String name = context.getAuthentication().getName();
+
+        User user = userRepository.findByUsername(name).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        List<FormAnswer> formAnswers = formAnswerRepository.findByUserId(user.getId());
+        log.info(user.getId());
+        return formAnswers.stream()
+                .map(formAnswerMapper::toFormAnswerResponse)
+                .collect(Collectors.toList());
     }
 }

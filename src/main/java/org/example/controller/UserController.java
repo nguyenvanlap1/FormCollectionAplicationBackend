@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.dto.request.user.UserCreationRequest;
 import org.example.dto.request.user.UserUpdateRequest;
 import org.example.dto.response.authentication.ApiResponse;
+import org.example.dto.response.formAnswer.FormAnswerResponse;
 import org.example.dto.response.user.UserResponse;
 import org.example.entity.user.User;
 import org.example.mapper.UserMapper;
@@ -77,6 +78,13 @@ public class UserController {
     String deleteUser(@PathVariable("userId") String userId) {
         userService.deleteUser(userId);
         return "User was deleted";
+    }
+
+    @GetMapping("/myFormAnswers")
+    ApiResponse<List<FormAnswerResponse>> getAllMyFormAnswers(){
+        ApiResponse<List<FormAnswerResponse>> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(userService.getAllFormAnswers());
+        return apiResponse;
     }
 }
 

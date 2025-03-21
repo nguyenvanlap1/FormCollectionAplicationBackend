@@ -37,13 +37,25 @@ public class FormAnswerController {
     ApiResponse<FormAnswerResponse> createFormAnser(@PathVariable String formId,
                                                     @RequestPart("data") String request,
                                                     @RequestParam HashMap<String, MultipartFile> files){
+        log.info("Received form submission for formId: {}", formId);
+        log.info("Raw request data: {}", request);
+        log.info("Number of files received: {}", files.size());
         ApiResponse<FormAnswerResponse> apiResponse = new ApiResponse<>();
         try {
+            log.info("Attempting to parse JSON request: {}", request);
+
             // Chuyển String JSON thành object FormAnswerRequest
             ObjectMapper objectMapper = new ObjectMapper();
             FormAnswerRequest formAnswerRequest = objectMapper.readValue(request, FormAnswerRequest.class);
+
+            log.info("Successfully parsed FormAnswerRequest: {}", formAnswerRequest);
+            log.info("Calling createFormAnswerResponse with formId: {}, number of files: {}", formId, files.size());
+
             apiResponse.setResult(formAnswerService.createFormAnswerResponse(formAnswerRequest, files, formId));
+
+            log.info("Successfully created FormAnswerResponse");
         } catch (Exception e) {
+            log.error("Lỗi khi xử lý dữ liệu: {}", e.getMessage(), e);
             apiResponse.setMessage("Lỗi khi xử lý dữ liệu: " + e.getMessage());
         }
         return apiResponse;

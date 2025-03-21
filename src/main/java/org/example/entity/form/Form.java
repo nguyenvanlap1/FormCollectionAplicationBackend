@@ -36,6 +36,7 @@ public class Form {
    Project project;
 
    @OneToMany(mappedBy = "form", cascade = CascadeType.ALL, orphanRemoval = true)
+   @OrderBy("numericalOrder ASC")
    List<Question> questions;
 
    @OneToMany(mappedBy = "form", cascade = CascadeType.ALL, orphanRemoval = true)

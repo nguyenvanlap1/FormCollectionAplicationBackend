@@ -49,7 +49,10 @@ public class FormAnswerService {
 
     @PreAuthorize("hasRole('USER')")
     public FormAnswerResponse createFormAnswerResponse(FormAnswerRequest request, HashMap<String, MultipartFile> files, String formId){
+        log.info("Calling createFormAnswerResponse with formId: {}", formId);
+        log.info("Raw request string: {}", request);
         FormAnswer formAnswer = formAnswerMapper.toFormAnswer(request);
+        log.info("Mapped FormAnswer: {}", formAnswer);
 
         Form form = formRepository.findById(formId)
                 .orElseThrow(() -> new AppException(ErrorCode.RESOURCE_NOT_FOUND));

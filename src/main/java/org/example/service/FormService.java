@@ -125,10 +125,6 @@ public class FormService {
         User user = getUser();
         Form form = formRepository.findById(formId)
                 .orElseThrow(() -> new AppException(ErrorCode.RESOURCE_NOT_FOUND));
-
-        if(!hasPermission(user.getId(), form.getProject().getId())) {
-            throw new AppException(ErrorCode.FORBIDDEN);
-        }
         return formMapper.toFormResponse(form);
     }
 
